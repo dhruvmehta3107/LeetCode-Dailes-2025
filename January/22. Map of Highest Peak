@@ -1,0 +1,28 @@
+class Solution {
+public:
+    int dirs[5] = {0, 1, 0, -1, 0};
+    vector<vector<int>> highestPeak(vector<vector<int>>& isWater) {
+        vector<pair<int, int>> p;
+        int h = 1, si = isWater.size(), sj = isWater[0].size();
+        for (auto i = 0; i < si; ++i)
+            for (auto j = 0; j < sj; ++j) {
+                isWater[i][j] = isWater[i][j] == 1 ? 0 : -1;
+                if (isWater[i][j] == 0) p.push_back({i, j});
+            }
+        while (!p.empty()) {
+            vector<pair<int, int>> p1;
+            for (auto [i, j] : p) {
+                for (int d = 0; d < 4; ++d) {
+                    int x = i + dirs[d], y = j + dirs[d + 1];
+                    if (x >= 0 && y >= 0 && x < si && y < sj && isWater[x][y] == -1) {
+                        isWater[x][y] = h;
+                        p1.push_back({x, y});
+                    }
+                }
+            }
+            swap(p, p1);
+            ++h;
+        }
+        return isWater;
+    }
+};
